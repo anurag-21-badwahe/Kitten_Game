@@ -1,76 +1,65 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface User {
-  username: string;
-  wins: number;
-}
+type CardType = 'Cat' | 'Defuse' | 'Shuffle' | 'Exploding Kitten';
 
 interface GameState {
-  deck: string[];
-  username: string;
-  leaderboard: User[];
-  gameStatus: 'not_started' | 'playing' | 'won' | 'lost';
-  defuseCount: number;
-  isGameOver: boolean;
+  deck: CardType[];
+  drawnCards: CardType[];
+  defuseCardCount: number;
+  gameOver: boolean;
+  playerWon: boolean;
 }
 
 const initialState: GameState = {
   deck: [],
-  username: '',
-  leaderboard: [],
-  gameStatus: 'not_started',
-  defuseCount: 0,
-  isGameOver: false,
+  drawnCards: [],
+  defuseCardCount: 0,
+  gameOver: false,
+  playerWon: false,
 };
 
-const gameSlice = createSlice({
+export const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
     startGame(state) {
-      const cards = ['😼', '🙅‍♂️', '🔀', '💣', '💣'];
-      state.deck = cards.sort(() => Math.random() - 0.5);
-      state.gameStatus = 'playing';
-      state.isGameOver = false;
-      state.defuseCount = 1;
+      state.deck = shuffleDeck(['Cat', 'Defuse', 'Shuffle', 'Exploding Kitten', 'Cat']);
+      state.drawnCards = [];
+      state.defuseCardCount = 0;
+      state.gameOver = false;
+      state.playerWon = false;
     },
     drawCard(state) {
-      if (state.isGameOver || state.deck.length === 0) return;
-      const drawnCard = state.deck.shift() as string;
-      if (drawnCard === '💣') {
-        if (state.defuseCount > 0) {
-          state.defuseCount -= 1;
-          state.gameStatus = 'playing';
-        } else {
-          state.gameStatus = 'lost';
-          state.isGameOver = true;
+      if (state.gameOver || state.deck.length === 0) return;
+      
+      const card = state.deck.pop();
+      if (card) {
+        state.drawnCards.push(card);
+        if (card === 'Exploding Kitten') {
+          if (state.defuseCardCount > 0) {
+            state.defuseCardCount--;
+          } else {
+            state.gameOver = true;
+          }
+        } else if (card === 'Defuse') {
+          state.defuseCardCount++;
+        } else if (card === 'Shuffle') {
+          state.deck = shuffleDeck(['Cat', 'Defuse', 'Shuffle', 'Exploding Kitten', 'Cat']);
         }
-      } else if (drawnCard === '🔀') {
-        state.deck = ['😼', '🙅‍♂️', '🔀', '💣', '💣'].sort(() => Math.random() - 0.5);
-      } else if (drawnCard === '🙅‍♂️') {
-        // Do nothing, defuse card is just removed
       }
-      if (state.deck.length === 0 && state.gameStatus === 'playing') {
-        state.gameStatus = 'won';
-        state.isGameOver = true;
-      }
-    },
-    addUsername(state, action: PayloadAction<string>) {
-      state.username = action.payload;
-    },
-    updateLeaderboard(state) {
-      if (state.gameStatus === 'won') {
-        const existingUser = state.leaderboard.find(user => user.username === state.username);
-        if (existingUser) {
-          existingUser.wins += 1;
-        } else {
-          state.leaderboard.push({ username: state.username, wins: 1 });
-        }
+
+      if (state.deck.length === 0 && !state.gameOver) {
+        state.playerWon = true;
+        state.gameOver = true;
       }
     },
   },
 });
 
-export const { startGame, drawCard, addUsername, updateLeaderboard } = gameSlice.actions;
+export const { startGame, drawCard } = gameSlice.actions;
 
 export default gameSlice.reducer;
+
+function shuffleDeck(deck: CardType[]): CardType[] {
+  return deck.sort(() => Math.random() - 0.5);
+}
