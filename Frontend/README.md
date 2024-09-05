@@ -1,50 +1,25 @@
-# React + TypeScript + Vite
+# 😸 Exploding Kitten Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the Exploding Kitten game! This is an online single-player card game built using React, Redux, Golang, and Redis. The objective of the game is to draw cards from the deck without drawing the Exploding bomb card. 
 
-Currently, two official plugins are available:
+## 🎮 How to Play
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Start Game**: Enter your username and start the game.
+2. **Draw Cards**: Click on the deck to draw a card. Keep drawing until you either win by drawing all non-exploding kitten cards or lose by drawing an exploding bomb.
+3. **Win or Lose**: If you draw all non-exploding cards, you win! Your win will be recorded in the leaderboard. If you draw an exploding kitten, you lose.
 
-## Expanding the ESLint configuration
+## 🚀 Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Frontend**: React, Redux, Typescript, Tailwind
+- **Backend**: Golang
+- **Database**: Redis
 
-- Configure the top-level `parserOptions` property like this:
+### 🛠️ Setup
+**Frontend**: This is the front end repository
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+**Backend**: Repository link will be added soon.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## 📊 Leaderboard
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+The leaderboard records the number of games won by each player. One game won equals one point.
