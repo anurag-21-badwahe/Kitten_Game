@@ -70,7 +70,7 @@ export default function Game() {
   const [showHowTo, setShowHowTo] = useState(false);
 
   return (
-    <div className="flex lg:flex-row flex-col h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white">
+    <div className="flex lg:flex-row flex-col h-screen w-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white">
       {/* Modal for username input */}
       <div className="flex flex-col items-center justify-center content-center">
         <Modal
